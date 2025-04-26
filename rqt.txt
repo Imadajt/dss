@@ -1,0 +1,14 @@
+-- XQuery Requête 1 : Récupérer tous les titres des questions
+for $q in doc("questions_ergonomie.xml")//question
+return $q/titre
+
+-- XQuery Requête 2 : Récupérer toutes les questions où le corps contient "interface"
+for $q in doc("questions_ergonomie.xml")//question
+where contains(lower-case($q/corps_question), "interface")
+return $q
+
+-- XPath Requête 1 : Obtenir toutes les réponses
+//question/reponse
+
+-- XPath Requête 2 : Trouver les titres dont la réponse contient "ergonomie"
+//question[contains(lower-case(reponse), "ergonomie")]/titre

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Questions d'Ergonomie</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .question {
+            background: #fff;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        .titre {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+        .corps {
+            margin-top: 5px;
+            font-style: italic;
+            color: #666;
+        }
+        .reponse {
+            margin-top: 10px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Questions et Réponses sur l'Ergonomie</h1>
+
+<div id="contenu"></div>
+
+<script>
+// Charger le fichier XML
+fetch('ihm.xml')
+    .then(response => response.text())
+    .then(data => {
+        let parser = new DOMParser();
+        let xml = parser.parseFromString(data, "application/xml");
+
+        let questions = xml.getElementsByTagName('question');
+        let contenu = document.getElementById('contenu');
+
+        for (let i = 0; i < questions.length; i++) {
+            let titre = questions[i].getElementsByTagName('titre')[0].textContent;
+            let corps = questions[i].getElementsByTagName('corps_question')[0].textContent;
+            let reponse = questions[i].getElementsByTagName('reponse')[0].textContent;
+
+            let div = document.createElement('div');
+            div.className = 'question';
+
+            div.innerHTML = `
+                <div class="titre">${titre}</div>
+                <div class="corps">${corps}</div>
+                <div class="reponse">${reponse}</div>
+            `;
+
+            contenu.appendChild(div);
+        }
+    })
+    .catch(error => {
+        console.error('Erreur lors du chargement du XML:', error);
+        document.getElementById('contenu').innerText = "Erreur de chargement du fichier XML.";
+    });
+</script>
+
+</body>
+</html>
